@@ -2,7 +2,7 @@ const { ApplicationCommandType, Colors } = require('discord.js')
 
 module.exports = {
     name: 'wallet',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
     con.query(`SELECT * FROM users WHERE userID = '${interaction.user.id}'`, function(err, result) {

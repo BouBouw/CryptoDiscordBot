@@ -26,21 +26,22 @@ CREATE TABLE market (
     remaining_supply DECIMAL(15, 8) NOT NULL
 );
 
+-- Table pour les profils utilisateurs
 CREATE TABLE profile (
-    id INT AUTO_INCREMENT PRIMARY KEY
-    userID VARCHAR(20) PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    userID VARCHAR(20) NOT NULL,
     last_claim_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     coins INT DEFAULT 0
 );
 
+-- Table pour les sanctions
 CREATE TABLE sanctions (
-    id INT INT AUTO_INCREMENT PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     userID VARCHAR(255) NOT NULL,
     unbanAt BIGINT NULL DEFAULT NULL,
     reason TEXT NULL,
-    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-); 
+    createdAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Initialiser le marché avec les données de départ
 INSERT INTO market (crypto_price, total_supply, remaining_supply)

@@ -2,7 +2,7 @@ const { ApplicationCommandType, ActionRowBuilder, ButtonBuilder, ButtonStyle, Co
 
 module.exports = {
     name: 'roulette',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
     const userId = interaction.user.id;

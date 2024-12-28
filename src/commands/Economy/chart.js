@@ -3,7 +3,7 @@ const { createCanvas } = require('canvas');
 
 module.exports = {
     name: 'chart',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
     execute: async (client, interaction, args, con) => {
         // Fonction pour récupérer les données des transactions

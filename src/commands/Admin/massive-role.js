@@ -2,7 +2,7 @@ const { ApplicationCommandType, Colors, ApplicationCommandOptionType, Permission
 
 module.exports = {
     name: 'massive-role',
-    description: '(💡) Administration',
+    description: '(📌) Administration',
     type: ApplicationCommandType.ChatInput,
     options: [
         {

@@ -2,7 +2,7 @@ const { ApplicationCommandType, Colors, ApplicationCommandOptionType } = require
 
 module.exports = {
     name: 'sell',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
     options: [
         {
@@ -21,7 +21,7 @@ execute: async (client, interaction, args, con) => {
             const coins = cryptoAmount * cryptoPrice;
         
             // Vérifier le solde de l'utilisateur
-            con.query(`SELECT * FROM users WHERE userID = '${interaction.user.id}'`, function(err, result) {
+            con.query(`SELECT * FROM profile WHERE userID = '${interaction.user.id}'`, function(err, result) {
                 const user = result[0];
                 console.log(user)
 
@@ -36,7 +36,7 @@ execute: async (client, interaction, args, con) => {
                 let newCrypto = (Number(user.crypto) - Number(cryptoAmount));
                 console.log(newCrypto)
 
-                con.query(`UPDATE users SET coins = '${newCoins}', crypto = '${newCrypto}' WHERE userID = '${interaction.user.id}'`, function(err, result) {
+                con.query(`UPDATE profile SET coins = '${newCoins}', crypto = '${newCrypto}' WHERE userID = '${interaction.user.id}'`, function(err, result) {
                     if(err) throw err;
                 });
 
@@ -44,7 +44,7 @@ execute: async (client, interaction, args, con) => {
                     console.log(remainingSupply)
                 });
 
-                con.query(`INSERT INTO transactions (user_id, type, amount, coins, price) VALUES ('${user.id}', 'sell', '${cryptoAmount}', '${coins}', '${cryptoPrice}')`, function(err, result) {});
+                con.query(`INSERT INTO transactions (userID, type, amount, coins, price) VALUES ('${user.id}', 'sell', '${cryptoAmount}', '${coins}', '${cryptoPrice}')`, function(err, result) {});
 
                 const newPrice = cryptoPrice * (1 + 0.05 - (cryptoAmount / market.total_supply) * 0.1);
                 con.query(`UPDATE market SET crypto_price = '${newPrice}' WHERE id = 1`, function(err, result) {});

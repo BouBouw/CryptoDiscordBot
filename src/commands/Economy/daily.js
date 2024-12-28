@@ -3,7 +3,7 @@ const ms = require("parse-ms");
 
 module.exports = {
     name: 'daily',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
     const userId = interaction.user.id;

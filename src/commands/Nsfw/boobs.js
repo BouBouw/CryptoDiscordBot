@@ -3,7 +3,7 @@ const fetch = require("node-fetch");
 
 module.exports = {
     name: 'boobs',
-    description: '(💡) Nsfw',
+    description: '(🔞) Nsfw',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
     if(!interaction.channel.nsfw) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, ce n'est pas un salon NSFW.`})

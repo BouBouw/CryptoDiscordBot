@@ -9,7 +9,7 @@ const rewards = [
 
 module.exports = {
     name: 'slot-machine',
-    description: '(💡) Economy',
+    description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
     const randomSymbols = Array.from({ length: 9 }, () => symbols[Math.floor(Math.random() * symbols.length)]);
