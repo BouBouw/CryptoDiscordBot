@@ -13,7 +13,7 @@ module.exports = {
         }
     ],
 execute: async (client, interaction, args, con) => {
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return interaction.followUp({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
 
     const count = interaction.options.getNumber('amount');
     if(!count || isNaN(count)) return interaction.reply({ content: `Votre nombre n'est pas valide.` });

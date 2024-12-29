@@ -5,7 +5,7 @@ module.exports = {
     description: '(🪙) Economy',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
-    con.query(`SELECT * FROM users WHERE userID = '${interaction.user.id}'`, function(err, result) {
+    con.query(`SELECT * FROM profile WHERE userID = '${interaction.user.id}'`, function(err, result) {
         interaction.reply({
             embeds: [{
                 color: Colors.Blue,
@@ -14,6 +14,11 @@ execute: async (client, interaction, args, con) => {
                     {
                         name: `Coins`,
                         value: `${result[0].coins || 0}`,
+                        inline: true
+                    },
+                    {
+                        name: `En banque`,
+                        value: `${result[0].inBank || 0}`,
                         inline: true
                     },
                     {

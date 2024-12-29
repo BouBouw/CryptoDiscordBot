@@ -1,0 +1,23 @@
+{
+    "events": {
+        "sub-events": {
+            "client": {
+
+            },
+            "guilds": {
+
+            },
+            "users": {
+
+            }
+        }
+    },
+    "commands": {
+        "name": {
+            "ping": "ping"
+        },
+        "sub-commands": {
+            "ping": "Pong! 🏓"
+        }
+    }
+}

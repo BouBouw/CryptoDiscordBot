@@ -13,7 +13,7 @@ module.exports = {
         }
     ],
 execute: async (client, interaction, args, con) => {
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) return interaction.followUp({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` });
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageRoles)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` });
 
     const role = interaction.options.getRole('role');
 

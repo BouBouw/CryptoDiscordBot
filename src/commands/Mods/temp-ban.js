@@ -25,7 +25,7 @@ module.exports = {
         },
     ],
 execute: async (client, interaction, args, con) => {
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) return interaction.followUp({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.BanMembers)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
 
     const user = interaction.options.getMember('user');
     const duration = interaction.options.getInteger('duration');
@@ -45,7 +45,7 @@ execute: async (client, interaction, args, con) => {
             }]
         }).then(() => {
             con.query(`INSERT INTO tempbans (userId, guildId, unbanAt, reason) VALUES (?, ?, ?, ?)`, [user.id, interaction.guild.id, unbanAt, reason], function(err, result) {
-                
+                   
             })
         })
     } catch(error) {

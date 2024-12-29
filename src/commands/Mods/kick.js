@@ -19,7 +19,7 @@ module.exports = {
         }
     ],
 execute: async (client, interaction, args, con) => {
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.KickMembers)) return interaction.followUp({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.KickMembers)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
 
     const target = interaction.options.getMember('user');
     const reason = interaction.options.getString("reason") || "Aucune raison fournie.";

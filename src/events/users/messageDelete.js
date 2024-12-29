@@ -4,8 +4,6 @@ module.exports = {
 execute: async (message, client, con) => {
     if(!message.guild) return;
 
-    console.log(message)
-
     con.query(`SELECT * FROM snipe WHERE id = '1'`, function(err, result) {
         if(!result[0]) {
             con.query(`INSERT INTO snipe (userID, message) VALUES ('${message.author.id}', '${message.content}')`, function(err, result) {

@@ -5,7 +5,7 @@ module.exports = {
     description: '(⚙️) Moderation',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) return interaction.followUp({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
 
     const channel = interaction.member.voice.channel;
     if(!channel) return interaction.reply({
