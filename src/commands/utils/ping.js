@@ -1,10 +1,13 @@
-const { ApplicationCommandType } = require('discord.js')
+const { ApplicationCommandType } = require('discord.js');
+const Languages = require('../../../handlers/functions/Languages');
 
 module.exports = {
     name: 'ping',
     description: '(💡) Utils',
     type: ApplicationCommandType.ChatInput,
 execute: async (client, interaction, args, con) => {
-    interaction.reply({ content: `${interaction.member} pong! :ping_pong:` })
+    const text = await Languages.getLangCommands(interaction.commandName, con);
+    
+    interaction.reply({ content: `${interaction.member} ${text}` })
     }
 }

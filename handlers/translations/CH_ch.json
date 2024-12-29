@@ -1,0 +1,27 @@
+{
+    "events": {
+        "sub-events": {
+            "client": {
+
+            },
+            "guilds": {
+
+            },
+            "users": {
+
+            }
+        }
+    },
+    "commands": {
+        "name": {
+            "ping": "ping"
+        },
+        "sub-commands": {
+            "ping": "乒乓球! 🏓",
+            "clear": {
+                "permission": "You don't have permission.",
+                "successfull": "Success"
+            }
+        }
+    }
+}

@@ -17,7 +17,11 @@
             "ping": "ping"
         },
         "sub-commands": {
-            "ping": "Pong! 🏓"
+            "ping": "Pong! 🏓",
+            "clear": {
+                "permission": "You don't have permission.",
+                "successfull": "Success"
+            }
         }
     }
 }
