@@ -7,7 +7,7 @@ module.exports = {
 execute: async (client, interaction, args, con) => {
     if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) return interaction.reply({ content: `\`[❗]\` ${interaction.member}, vous n'avez pas la permission d'utiliser cette commande.` })
 
-    const channel = interaction.member.voice.channel;
+    const channel = interaction.member.voice;
     if(!channel) return interaction.reply({
         embeds: [{
             color: Colors.Blue,

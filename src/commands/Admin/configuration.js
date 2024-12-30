@@ -204,42 +204,47 @@ execute: async (client, interaction, args, con) => {
 
                                 switch(select.values[0]) {
                                     case 'settings.manager.bot.nickname': {
-                                        await select.showModal(
-                                            new ModalBuilder()
-                                            .setCustomId('settings.manager.bot.nickname')
-                                            .setTitle("Modifier le nom d'utilisateur")
-                                            .addComponents(
-                                                new ActionRowBuilder()
-                                                .addComponents(
-                                                    new TextInputBuilder()
-                                                    .setCustomId('settings.manager.bot.nickname')
+                                        const modal = new ModalBuilder()
+                                        .setCustomId('settings.manager.bot.nickname')
+                                        .setTitle("Modifier le nom d'utilisateur")
+                                        .addComponents(
+                                            new ActionRowBuilder().addComponents(
+                                                new TextInputBuilder()
+                                                    .setCustomId('nickname_input')
                                                     .setLabel("Quel est le nouveau nom ?")
                                                     .setMaxLength(16)
                                                     .setStyle(TextInputStyle.Short)
-                                                )
                                             )
-                                        )
-                                        
-                                        const filter = (i) => i.user.id === interaction.member.id && i.isModalSubmit();
-                                        const collector = interaction.channel.createMessageComponentCollector({ filter: filter, time: 60000 });
+                                        );
 
-                                        collector.on('collect', async (i) => {
-                                            if (i.isModalSubmit()) {
-                                                const newNickname = i.fields.getTextInputValue('settings.manager.bot.nickname');
-                                                client.user.setUsername(newNickname).then(async () => {
-                                                    await i.reply({
-                                                        embeds: [{
-                                                            color: Colors.Blue,
-                                                            description: `Le nom d'utilisateur vient d'être modifié.`,
-                                                            footer: {
-                                                                text: "Redémarrage en cours..."
-                                                            }
-                                                        }]
-                                                    })
-                                                    await process.exit(0);
-                                                })
-                                            }
-                                        })
+                                        await select.showModal(modal);
+                                        
+                                        const filter = (interaction) =>
+                                            interaction.customId === 'settings.manager.bot.nickname' &&
+                                            interaction.user.id === select.user.id;
+
+                                        try {
+                                            const modalInteraction = await select.awaitModalSubmit({ filter, time: 60000 });
+
+                                            const newNickname = modalInteraction.fields.getTextInputValue('nickname_input');
+                                    
+                                            await client.user.setUsername(newNickname);
+                                            await modalInteraction.reply({
+                                                embeds: [
+                                                    {
+                                                        color: Colors.Blue,
+                                                        description: `Le nom d'utilisateur vient d'être modifié.`,
+                                                        footer: {
+                                                            text: "Redémarrage en cours...",
+                                                        },
+                                                    },
+                                                ],
+                                            });
+                                    
+                                            process.exit(0);
+                                        } catch(error) {
+                                            throw error;
+                                        }
                                         break;
                                     }
 
