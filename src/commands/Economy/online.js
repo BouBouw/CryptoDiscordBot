@@ -126,13 +126,108 @@ execute: async (client, interaction, args, con) => {
                     if (!select.deffered) await select.deferUpdate();
                     
                     switch(select.values[0]) {
+                        case 'tic_tac_toe': {
+                            gameSettings.gameType = 1
+
+                            msg.edit({
+                                embeds: [{
+                                    color: Colors.Blue,
+                                    description: `Jeux en Ligne > **__${gameMapping[gameSettings.gameType]}__**`,
+                                    fields: [
+                                        {
+                                            name: `Type de Jeu :`,
+                                            value: `\`1\` contre \`1\`\n\`2\` contre \`2\``
+                                        }
+                                    ]
+                                }],
+                                components: [ 
+                                    new ActionRowBuilder()
+                                    .addComponents(
+                                        new ButtonBuilder()
+                                        .setCustomId('1vs1')
+                                        .setLabel("1 Contre 1")
+                                        .setStyle(ButtonStyle.Secondary),
+                                        new ButtonBuilder()
+                                        .setCustomId('2vs2')
+                                        .setLabel("2 Contre 2")
+                                        .setStyle(ButtonStyle.Secondary),
+                                    )
+                                ]
+                            }).then(async (m) => {
+                                const filter = (i) => i.user.id === interaction.member.id && i.isButton();
+                                await Buttons();
+                    
+                                async function Buttons() {
+                                    let collected;
+                    
+                                    try {
+                                        collected = await m.awaitMessageComponent({ filter: filter });
+                                    } catch(error) {
+                                        if (error.code === "INTERACTION_COLLECTOR_ERROR") {
+                                            return m.delete()
+                                        }
+                                    }
+                    
+                                    if (!collected.deffered) await collected.deferUpdate();
+                    
+                                    switch(collected.customId) {
+                                        case '1vs1': {
+                                            gameSettings.gameInt = 0
+                                            const uuid = generateRandomUUID();
+
+                                            con.query(`INSERT INTO games_hosted (uuid, hostID, type, gameInt) VALUES ('${uuid}', '${interaction.user.id}', '${gameSettings.gameType}', '${gameSettings.gameInt}')`, function(err, result) {
+                                                con.query(`CREATE TABLE games_${uuid} (id INT AUTO_INCREMENT PRIMARY KEY, userID VARCHAR(255), joinedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`, function(err, result) {
+                                                    con.query(`INSERT INTO games_${(uuid).toLowerCase()} (userID) VALUES ('${interaction.user.id}')`, function(err, result) {
+                                                        m.edit({
+                                                            embeds: [{
+                                                                color: Colors.Blue,
+                                                                description: `Votre partie de **${gameMapping[gameSettings.gameType]}** vient d'être créer.`,
+                                                                footer: {
+                                                                    text: `Veuillez patienter en attendant un joueur...`
+                                                                }
+                                                            }],
+                                                            components: []
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                            break;
+                                        }
+
+                                        case '2vs2': {
+                                            gameSettings.gameInt = 1
+                                            const uuid = generateRandomUUID();
+
+                                            con.query(`INSERT INTO games_hosted (uuid, hostID, type, gameInt) VALUES ('${uuid}', '${interaction.user.id}', '${gameSettings.gameType}', '${gameSettings.gameInt}')`, function(err, result) {
+                                                con.query(`CREATE TABLE games_${uuid} (id INT AUTO_INCREMENT PRIMARY KEY, userID VARCHAR(255), joinedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`, function(err, result) {
+                                                    con.query(`INSERT INTO games_${(uuid).toLowerCase()} (userID) VALUES ('${interaction.user.id}')`, function(err, result) {
+                                                        m.edit({
+                                                            embeds: [{
+                                                                color: Colors.Blue,
+                                                                description: `Votre partie de **${gameMapping[gameSettings.gameType]}** vient d'être créer.`,
+                                                                footer: {
+                                                                    text: `Veuillez patienter en attendant un joueur...`
+                                                                }
+                                                            }],
+                                                            components: []
+                                                        })
+                                                    })
+                                                })
+                                            })
+                                            break;
+                                        }
+                                    }
+                                }
+                            })
+                            break;
+                        }
                         case 'rock_paper_cisors': {
                             gameSettings.gameType = 6
 
                             msg.edit({
                                 embeds: [{
                                     color: Colors.Blue,
-                                    description: `Jeux en Ligne > **__Pierre Papier Ciseaux__**`,
+                                    description: `Jeux en Ligne > **__${gameMapping[gameSettings.gameType]}__**`,
                                     fields: [
                                         {
                                             name: `Type de Jeu :`,
@@ -177,11 +272,12 @@ execute: async (client, interaction, args, con) => {
                                                         m.edit({
                                                             embeds: [{
                                                                 color: Colors.Blue,
-                                                                description: `Votre partie de **Pierre Papier Ciseaux** vient d'être créer.`,
+                                                                description: `Votre partie de **${gameMapping[gameSettings.gameType]}** vient d'être créer.`,
                                                                 footer: {
                                                                     text: `Veuillez patienter en attendant un joueur...`
                                                                 }
-                                                            }]
+                                                            }],
+                                                            components: []
                                                         })
                                                     })
                                                 })
@@ -243,7 +339,6 @@ execute: async (client, interaction, args, con) => {
                                 if (pageData.length === 0) {
                                     row = []
                                 } else {
-                                    console.log(pageData)
                                     row.push(
                                         new ActionRowBuilder()
                                         .addComponents(

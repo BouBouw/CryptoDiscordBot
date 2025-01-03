@@ -5,7 +5,7 @@ const getUser = async (userId, con) => {
                 if(!result[0]) {
                     con.query(`INSERT INTO profile (userID) VALUES ('${userId}')`, function(err, result) {
                         return resolve({
-                            id: result[0].insertId,
+                            id: result.insertId,
                             userID: userId,
                             experiences: 0,
                             level: 0,
