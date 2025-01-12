@@ -68,6 +68,18 @@ const GetCurrentTeam = (userId) => {
     })
 }
 
+const GetTeamByName = (name) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            connection.query(`SELECT * FROM teams WHERE name = '${name}'`, function(err, result) {
+                resolve({ data: [ result[0] ]})
+            })
+        } catch(err) {
+            reject(err)
+        }
+    })
+}
+
 const MembersTeamLength = (name) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -123,6 +135,7 @@ const Teams = {
     Delete,
     CheckTeam,
     GetCurrentTeam,
+    GetTeamByName,
     MembersTeamLength
 }
 

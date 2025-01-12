@@ -8,6 +8,18 @@ const checkPermissionsInt = (userId) => {
 
 };
 
+const CheckRole = async (userId) => {
+    try {
+        const guild = await client.guilds.cache.get('1209874388074364998');
+        const member = await guild.members.fetch(userId).catch(() => null);
+    
+        const hasRole = member.roles.cache.has('1328010568854147092');
+        return hasRole;
+    } catch(err) {
+        return false;
+    }
+}
+
 async function scanRoles() {
     const guild = await client.guilds.cache.get('1209874388074364998');
     const roles = await guild.roles.cache;
@@ -28,7 +40,8 @@ async function scanRoles() {
 
 const Permissions = {
     checkPermissionsRole,
-    checkPermissionsInt
+    checkPermissionsInt,
+    CheckRole
 };
 
 module.exports = Permissions;

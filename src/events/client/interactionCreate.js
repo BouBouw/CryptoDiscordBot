@@ -1,3 +1,5 @@
+const Permissions = require("../../../handlers/functions/Permissions");
+
 module.exports = {
 	name: 'interactionCreate',
 	once: false,
@@ -11,6 +13,11 @@ execute: async (interaction, client, con) => {
             if(!cmd) {
                 return interaction.followUp({ content: `\`[⌛]\` ${interaction.member}, an error has occured.` })
             }
+
+            const p = await Permissions.CheckRole(interaction.user.id);
+            if(!p) return interaction.reply({
+                content: `Vous devez avoir le rôle <@&1328010568854147092>.`
+            })
 
             const args = [];
 

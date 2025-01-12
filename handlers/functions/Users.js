@@ -1,9 +1,11 @@
-const getUser = async (userId, con) => {
+const { connection } = require("../..");
+
+const getUser = async (userId) => {
     return new Promise((resolve, reject) => {
         try {
-            con.query(`SELECT * FROM profile WHERE userID = '${userId}'`, function(err, result) {
+            connection.query(`SELECT * FROM profile WHERE userID = '${userId}'`, function(err, result) {
                 if(!result[0]) {
-                    con.query(`INSERT INTO profile (userID) VALUES ('${userId}')`, function(err, result) {
+                    connection.query(`INSERT INTO profile (userID) VALUES ('${userId}')`, function(err, result) {
                         return resolve({
                             id: result.insertId,
                             userID: userId,
