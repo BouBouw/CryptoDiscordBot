@@ -1,0 +1,72 @@
+const GUILD_ID = '619960236517883914';
+const CHANNEL_MEMBRE_TOTAL = '1174688582758310009';
+const CHANNEL_ONLINE_MEMBERS = '1174693058055516271';
+const CHANNEL_VOC_MEMBERS = '1321234869178597560';
+
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function updateChannels(client) {
+  try {
+    const guild = await client.guilds.fetch(GUILD_ID);
+    if (!guild) {
+      console.error(`Le serveur avec l'ID ${GUILD_ID} est introuvable.`);
+      return;
+    }
+
+    const members = await guild.members.fetch();
+
+    const totalMembers = members.size;
+    const onlineMembers = members.filter(
+      (member) =>
+        member.presence &&
+        ['online', 'idle', 'dnd'].includes(member.presence.status) &&
+        !member.user.bot
+    ).size;
+
+    const channels = await guild.channels.fetch();
+    const membersInVoice = channels
+      .filter((channel) => channel.isVoiceBased())
+      .reduce((count, channel) => count + channel.members.filter((m) => !m.user.bot).size, 0);
+
+    const updates = new Map([
+      [CHANNEL_MEMBRE_TOTAL, `⭐ • Membres : ${totalMembers}`],
+      [CHANNEL_ONLINE_MEMBERS, `🟢 • En ligne : ${onlineMembers}`],
+      [CHANNEL_VOC_MEMBERS, `🔈 • En vocal : ${membersInVoice}`],
+    ]);
+
+    for (const [channelId, newName] of updates) {
+      const channel = await guild.channels.fetch(channelId);
+      if (channel) {
+        try {
+          await channel.setName(newName);
+        } catch (error) {
+          if (error.code === 50013 || error.code === 429) {
+            console.warn(
+              `Ratelimit détecté ou problème de permission sur le canal ${channelId}. Attente de 15 secondes.`
+            );
+            await wait(15000);
+            await channel.setName(newName).catch(console.error);
+          } else {
+            console.error(`Erreur lors de la mise à jour du canal ${channelId}:`, error);
+          }
+        }
+      } else {
+        console.warn(`Canal avec l'ID ${channelId} introuvable.`);
+      }
+    }
+
+    console.log('Salons mis à jour avec succès.');
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour des salons :', error);
+  }
+}
+
+client.once('ready', () => {
+  console.log(`${client.user.tag} est connecté !`);
+  updateChannels(client);
+});
+
+client.on('guildMemberAdd', () => updateChannels(client));
+client.on('guildMemberRemove', () => updateChannels(client));
+client.on('presenceUpdate', () => updateChannels(client));
+client.on('voiceStateUpdate', () => updateChannels(client));
