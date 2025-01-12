@@ -58,6 +58,7 @@ const GetCurrentTeam = (userId) => {
     return new Promise(async (resolve, reject) => {
         try {
             const t = await CheckTeam(userId);
+            if(!t.data[0]) return resolve({ data: [] })
 
             connection.query(`SELECT * FROM team_${t.data[0].name} WHERE userID = '${userId}'`, function(err, result) {
                 resolve({ data: [ result[0] ]})
